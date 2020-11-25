@@ -3,11 +3,13 @@
 #include "mem.h"
 
 //todo add flags: copy val, copy key, auto increase, auto decrease
-//todo prime num for every po2
+//todo prime num for every pow2
 t_hashmap	*hashmap_new_param(size_t capacity, float load_factor, size_t hash_key)
 {
 	t_hashmap	*hmap;
 
+	if (load_factor < 0.0f || load_factor > 0.99f)
+		return (NULL);
 	capacity = next_power_of_two(capacity);
 	hmap = ft_calloc(1, sizeof(t_hashmap));
 	if (!hmap)

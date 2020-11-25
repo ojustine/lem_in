@@ -31,7 +31,7 @@ t_hashmap	*hashmap_new_param(size_t capacity, float load_factor, size_t hash_key
 int	hashmap_resize(t_hashmap *hmap, size_t new_capacity);
 int	hashmap_put(t_hashmap *hmap, const void *key, size_t key_len, void *val);
 void	*hashmap_get(t_hashmap *hmap, const void *key, size_t key_len);
-int	hashmap_insert(t_hashmap *hmap, const void *key, size_t key_len, void *val);
-void	*hashmap_iter(t_hashmap *hmap, size_t *iter, void **val_ptr);
+int		hashmap_insert(t_hashmap *hmap, t_hashmap_entry *entry);
+void	*hashmap_iter(t_hashmap *hmap, size_t *iter, void **keyp, void **valp);
 void	hashmap_destroy(t_hashmap **hmap);
 #endif

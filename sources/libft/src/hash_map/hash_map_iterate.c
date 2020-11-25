@@ -1,6 +1,6 @@
 #include "hash_map.h"
 
-void	*hashmap_iter(t_hashmap *hmap, size_t *iter, void **val_ptr)
+void	*hashmap_iter(t_hashmap *hmap, size_t *iter, void **keyp, void **valp)
 {
 	const size_t				capacity = hmap->capacity;
 	register size_t				i;
@@ -14,8 +14,10 @@ void	*hashmap_iter(t_hashmap *hmap, size_t *iter, void **val_ptr)
 		if (!entry->key)
 			continue;
 		*iter = i;
-		if (val_ptr)
-			*val_ptr = entry->val;
+		if (keyp)
+			*keyp = entry->key;
+		if (valp)
+			*valp = entry->val;
 		return (entry->key);
 	}
 	return (NULL);

@@ -6,6 +6,8 @@ void	hashmap_destroy(t_hashmap **hmap)
 	register size_t 			i;
 	register t_hashmap_entry	*entry;
 
+	if (!hmap)
+		return ;
 	i = 0;
 	while (i < (const size_t)(*hmap)->capacity)
 	{

@@ -39,12 +39,6 @@ static void		info_init(t_graph *g)
 	g->links = arrlist_new(40);
 	g->start = 0;
 	g->end = 0;
-//	info->n = rooms->size;
-//	g->last = malloc(info->n * sizeof(t_list_node *));
-//	if (info->d == NULL || info->last == NULL)
-//	{
-//		ft_throw(ALLOC_MSG, E_ALLOC);
-//	}
 }
 
 void				parse_graph(t_graph	*g, t_list *input)
@@ -70,6 +64,7 @@ void				parse_graph(t_graph	*g, t_list *input)
 			parse_links(g, &command, line);
 		else
 			ft_kill(LEM_ERR_INV_LINE, NULL, __func__, __FILE__);
+
 	}
 	g->n = g->rooms->size;
 	g->last = malloc(g->n * sizeof(t_list_node *));

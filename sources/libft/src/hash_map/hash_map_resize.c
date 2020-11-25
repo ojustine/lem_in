@@ -1,11 +1,13 @@
+#include "util.h"
 #include "hash_map.h"
 #include "mem.h"
 
 void	hashmap_init_new_storage(t_hashmap *hmap, size_t new_capacity)
 {
 	new_capacity = next_power_of_two(new_capacity);
+	ft_assert(new_capacity > hmap->size, __func__, "hmap size overflow");
 	hmap->storage = ft_calloc(new_capacity, sizeof(t_hashmap_entry));
-	//todo assert new_capacity > hmap->size && new_storage != null
+	ft_assert(hmap->storage != NULL, __func__, "malloc error");
 	hmap->capacity = new_capacity;
 	hmap->max_size = new_capacity * hmap->load_factor;
 	hmap->max_offset = ft_log2(new_capacity);
@@ -29,13 +31,13 @@ int		hashmap_resize(t_hashmap *hmap, size_t new_capacity)
 		entry = &old_storage[i++];
 		if (!entry->key)
 			continue;
-		if (!hashmap_insert(hmap, entry->key, entry->key_len, entry->val))
+		if (!hashmap_insert(hmap, entry))
 		{
 			free(hmap->storage);
 			*hmap = snapshot;
 			return (0);
 		}
-		free(entry->key);
+		//free(entry->key);
 	}
 	free(old_storage);
 	return (1);

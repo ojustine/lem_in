@@ -11,16 +11,13 @@ typedef enum			e_room_type
 						ROOM_DEFAULT,
 						ROOM_START,
 						ROOM_END,
-						ROOM_IN = 11,
-						ROOM_OUT = 31,
 }						t_room_type;
 
-typedef enum			e_link_type
+typedef struct			s_ant
 {
-						BLOCKED,
-						ALLOWED,
-						INNER
-}						t_link_type;
+	int					wait_turns;
+	t_list_node			*path;
+}						t_ant;
 
 typedef struct			s_link
 {
@@ -28,7 +25,6 @@ typedef struct			s_link
 	int					to;
 	int					cap;
 	int					flow;
-	enum e_link_type	type;
 }						t_link;
 
 typedef struct			s_room

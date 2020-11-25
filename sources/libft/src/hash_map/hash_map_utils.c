@@ -45,7 +45,7 @@ uint64_t				murmur_hash_64(const void *key, size_t len,
 		hash ^= tmp;
 		hash *= MAGIC;
 	}
-	hash = murmur_tail((const unsigned char *)data, len, hash);
+	hash = murmur_tail((const unsigned char *)data, len % 8, hash);
 	hash ^= hash >> ROTATE;
 	hash *= MAGIC;
 	hash ^= hash >> ROTATE;

@@ -128,3 +128,67 @@ void			print_paths(t_list *paths, t_graph *g)
 	free(ant_pos);
 	free(ant_wait);
 }
+
+void			print_solution(t_graph *g, t_list *paths)
+{
+	t_ant	*ants;
+	size_t	*paths_sizes;
+	size_t	*paths_wait;
+	t_list_node	*node;
+
+	ants = ft_calloc(g->ants, sizeof(t_ant));
+	paths_sizes = ft_calloc(paths->size, sizeof(size_t));
+	paths_wait = ft_calloc(paths->size, sizeof(size_t));
+	ft_assert(ants != NULL && paths_sizes && paths_wait, __func__, "malloc error");
+	sort_paths(paths);
+	node = paths->front;
+	for (int i = 0; i < paths->size; i++)
+	{
+		paths_sizes[i] = ((t_list *)(node->data))->size;
+		node = node->next;
+	}
+
+	for (int i = 0; i < g->ants; i++)
+	{
+		int j = 0;
+		node = paths->front;
+		while (j < paths->size - 1)
+		{
+			if (paths_sizes[j] < paths_sizes[j + 1])
+				break;
+			j++;
+			node = node->next;
+		}
+		paths_sizes[j]++;
+		ants[i].wait_turns = paths_wait[j]++;
+		ants[i].path = ((t_list *)node->data)->front;
+	}
+
+	int		cur_ant;
+	int		printed;
+	int		room_index;
+
+	while (1)
+	{
+		printed = 0;
+		cur_ant = 0;
+		while (cur_ant < g->ants)
+		{
+			if (ants[cur_ant].wait_turns != 0)
+				--ants[cur_ant].wait_turns;
+			else if (ants[cur_ant].path != NULL)
+			{
+				if (printed == 1)
+					printf(" ");
+				printed = 1;
+				room_index = (int)(long long)(ants[cur_ant].path)->data;
+				printf("L%d-%s", cur_ant + 1, ((t_room *)g->rooms->storage[room_index])->name);
+				ants[cur_ant].path = ants[cur_ant].path->next;
+			}
+			cur_ant++;
+		}
+		if (!printed)
+			break ;
+		printf("\n");
+	}
+}

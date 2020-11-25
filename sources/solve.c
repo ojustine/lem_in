@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "io.h"
 #include "str.h"
 #include "lem.h"
 #include "mem.h"
@@ -9,7 +8,7 @@
 
 #define NOT_VISITED -1
 
-static int		bfs_internal(t_graph *g, int *visited)
+static int		bfs_internal(t_graph *g, int *layer)
 {
 	t_list		*queue;
 	int			v;
@@ -18,32 +17,31 @@ static int		bfs_internal(t_graph *g, int *visited)
 
 	queue = list_new();
 	list_push_back(queue, (void *)(long long)g->start);
-	visited[g->start] = 0;
-	while (queue->size > 0 && visited[g->end] == NOT_VISITED)
+	layer[g->start] = 0;
+	while (queue->size > 0 && layer[g->end] == NOT_VISITED)
 	{
 		v = (int)(long long)list_pop_front(queue);
 		link = ((t_room *)g->rooms->storage[v])->links->front;
 		while (link != NULL)
 		{
 			e = (t_link *)g->links->storage[(size_t)link->data];
-			if (visited[e->to] == NOT_VISITED && e->flow < e->cap)
+			if (layer[e->to] == NOT_VISITED && e->flow < e->cap)
 			{
 				list_push_back(queue, (void *)(long long)e->to);
-				visited[e->to] = visited[v] + 1;
+				layer[e->to] = layer[v] + 1;
 			}
 			link = link->next;
 		}
 	}
 	list_clear(&queue, NULL);
-	return (visited[g->end] != NOT_VISITED);
+	return (layer[g->end] != NOT_VISITED);
 }
 
-static int		bfs(t_graph *g, int *visited)
+static int		bfs(t_graph *g, int *layer)
 {
 	size_t	i;
 
-	ft_memset(visited, NOT_VISITED, g->n * sizeof(int ));
-	if (!bfs_internal(g, visited))
+	if (!bfs_internal(g, layer))
 		return (0);
 	i = 0;
 	while (i < g->rooms->size)
@@ -54,7 +52,7 @@ static int		bfs(t_graph *g, int *visited)
 	return (1);
 }
 
-static int		dfs(t_graph *g, int *visited, int v, int flow)
+static int		dfs(t_graph *g, int *layer, int v, int flow)
 {
 	t_link	*e;
 	t_link	*e_rev;
@@ -68,9 +66,9 @@ static int		dfs(t_graph *g, int *visited, int v, int flow)
 	{
 		e = (t_link *)g->links->storage[(size_t)g->last[v]->data];
 		e_rev = (t_link *)g->links->storage[(size_t)g->last[v]->data ^ 1UL];
-		if (visited[e->to] == visited[v] + 1)
+		if (layer[e->to] == layer[v] + 1)
 		{
-			pushed = dfs(g, visited, e->to, flow < e->cap - e->flow ? flow : e->cap - e->flow);
+			pushed = dfs(g, layer, e->to, flow < e->cap - e->flow ? flow : e->cap - e->flow);
 			if (pushed != 0)
 			{
 				e->flow += pushed;
@@ -109,17 +107,18 @@ t_list			*dinic(t_graph *g)
 	t_list	*cur_paths;
 	double	best_turns;
 	double	cur_turns;
-	int		*visited;
+	int		*layer;
 
-	visited = malloc(g->n * sizeof(int ));
-	//asset
 	best_paths = NULL;
 	best_turns = 0.0;
+	layer = malloc(g->n * sizeof(int ));
+	ft_assert(layer != NULL, __func__, "malloc error");
 	while (1)
 	{
-		if (!bfs(g, visited))
+		ft_memset(layer, NOT_VISITED, g->n * sizeof(int));
+		if (!bfs(g, layer))
 			break ;
-		while (dfs(g, visited, g->start, INT_MAX))
+		while (dfs(g, layer, g->start, INT_MAX))
 		{
 			cur_paths = get_paths(g);
 			cur_turns = count_turns(cur_paths, g->ants);
