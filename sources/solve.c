@@ -1,11 +1,13 @@
 #include <stdlib.h>
 #include "str.h"
-#include "lem.h"
+#include "lem_structs.h"
 #include "mem.h"
 #include "math.h"
 #include "util.h"
 #include "list.h"
 #include "lem_solve.h"
+#include "lem_paths.h"
+#include "lem_free.h"
 
 #define NOT_VISITED (-1)
 
@@ -16,7 +18,7 @@ static int		bfs(t_graph *g, int *layer)
 	t_list_node	*link;
 	int			v;
 
-	queue = list_new();
+	ft_assert((queue = list_new()) != NULL, __func__, "malloc error");
 	list_push_back(queue, &g->start);
 	layer[g->start] = 0;
 	while (queue->size > 0 && layer[g->end] == NOT_VISITED)
@@ -80,38 +82,33 @@ static void		restore_links(t_graph *g)
 }
 
 static void		choose_best_paths(t_list **best_paths, t_list *cur_paths,
-									 double *best_turns, double cur_turns)
+				int	ants_num)
 {
-	if (*best_paths == NULL || cur_turns < *best_turns)
+	static double	best_turns;
+	double			cur_turns;
+
+	cur_turns = paths_avg_turns(cur_paths, ants_num);
+	if (*best_paths == NULL || cur_turns < best_turns)
 	{
 		if (*best_paths != NULL)
-		{
-			list_clear(best_paths, NULL);//free func
-			//free(*best_paths);
-		}
+			list_clear(best_paths, free_path);
 		*best_paths = cur_paths;
-		*best_turns = cur_turns;
+		best_turns = cur_turns;
 	}
 	else
-	{
-		list_clear(&cur_paths, NULL);//free func
-		//free(cur_paths);
-	}
+		list_clear(&cur_paths, free_path);
 }
 
-t_list			*dinic(t_graph *g)
+t_list			*solve(t_graph *g)
 {
 	t_list	*best_paths;
 	t_list	*cur_paths;
-	double	best_turns;
-	double	cur_turns;
 	int		*layer;
 
 	best_paths = NULL;
-	best_turns = 0.0;
 	g->last = malloc(g->rooms->size * sizeof(t_list_node *));
 	layer = malloc(g->rooms->size * sizeof(int ));
-	ft_assert(layer != NULL, __func__, "malloc error");
+	ft_assert(layer != NULL && g->last != NULL, __func__, "malloc error");
 	while (1)
 	{
 		ft_memset(layer, NOT_VISITED, g->rooms->size * sizeof(int));
@@ -121,9 +118,10 @@ t_list			*dinic(t_graph *g)
 		while (dfs(g, layer, g->start, INT_MAX))
 		{
 			cur_paths = get_paths(g);
-			cur_turns = count_turns(cur_paths, g->ants);
-			choose_best_paths(&best_paths, cur_paths, &best_turns, cur_turns);
+			choose_best_paths(&best_paths, cur_paths, g->ants);
 		}
 	}
+	free(g->last);
+	free(layer);
 	return (best_paths);
 }

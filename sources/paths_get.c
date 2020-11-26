@@ -1,59 +1,45 @@
-#include <stdlib.h>
-#include "io.h"
 #include "str.h"
-#include "lem.h"
-#include "mem.h"
-#include "util.h"
+#include "lem_structs.h"
 #include "list.h"
+#include "util.h"
 
-static void		get_vertex(t_graph *g, int v, t_list *cur_path)
+static void		get_path(t_graph *g, int v, t_list *path)
 {
-	t_list_node	*node;
-	t_link	*edge;
+	register t_list_node	*node;
+	t_link					*edge;
 
-	if (cur_path->size == 0 ||
-		(size_t)cur_path->back->data != ((size_t)v ^ 1UL))
-	{
-		list_push_back(cur_path, (void *)(long long)v);
-	}
+	if (path->size == 0 || (size_t)path->back->data != ((size_t)v ^ 1UL))
+		list_push_back(path, (void *)(long long)v);
 	if (v == g->end)
-	{
 		return ;
-	}
-	node = ((t_room *)g->rooms->storage[v])->links->front;
+	node = ((t_room *)arrlist_peek(g->rooms, v))->links->front;
 	while (node != NULL)
 	{
-		edge = (t_link *)g->links->storage[(size_t)node->data];
+		edge = (t_link *)arrlist_peek(g->links, (size_t)node->data);
 		if (edge->flow > 0)
-		{
-			get_vertex(g, edge->to, cur_path);
-		}
+			get_path(g, edge->to, path);
 		node = node->next;
 	}
 }
 
 t_list			*get_paths(t_graph *g)
 {
-	t_list	*paths;
-	t_list	*cur_path;
-	t_list_node	*node;
-	t_link	*edge;
+	t_list					*paths;
+	t_list					*cur_path;
+	t_link					*edge;
+	register t_list_node	*node;
 
-//	paths = (t_list *)malloc(sizeof(t_list));
-//	if (paths == NULL)
-//		ft_throw(ALLOC_MSG, E_ALLOC);
 	paths = list_new();
-	node = ((t_room *)g->rooms->storage[g->start])->links->front;
+	ft_assert(paths != NULL, __func__, "malloc error");
+	node = ((t_room *)arrlist_peek(g->rooms, g->start))->links->front;
 	while (node != NULL)
 	{
-		edge = (t_link *)g->links->storage[(size_t)node->data];
+		edge = (t_link *)arrlist_peek(g->links, (size_t)node->data);
 		if (edge->flow > 0)
 		{
-			//cur_path = (t_list *)malloc(sizeof(t_list));
-			//if (cur_path == NULL)
-			//	ft_throw(ALLOC_MSG, E_ALLOC);
 			cur_path = list_new();
-			get_vertex(g, edge->to, cur_path);
+			ft_assert(cur_path != NULL, __func__, "malloc error");
+			get_path(g, edge->to, cur_path);
 			list_push_back(paths, cur_path);
 		}
 		node = node->next;
@@ -61,12 +47,12 @@ t_list			*get_paths(t_graph *g)
 	return (paths);
 }
 
-double			count_turns(t_list *paths, int number_of_ants)
+double			paths_avg_turns(t_list *paths, int number_of_ants)
 {
 	t_list_node	*node;
-	t_list	*path;
-	double	avg_path_len;
-	double	avg_ants_per_path;
+	t_list		*path;
+	double		avg_path_len;
+	double		avg_ants_per_path;
 
 	avg_path_len = 0.0;
 	node = paths->front;

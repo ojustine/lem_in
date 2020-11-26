@@ -1,7 +1,7 @@
 #include "conv.h"
 #include "io.h"
 #include "str.h"
-#include "lem.h"
+#include "lem_structs.h"
 #include "util.h"
 #include "list.h"
 #include "lem_errors.h"

@@ -24,5 +24,7 @@ typedef struct			s_fd_list
 
 int						get_next_line(int fd, char **line);
 void					ft_putendl(const char *s);
+void					ft_putstr(char const *s);
+void					ft_putnbr(int n);
 
 #endif

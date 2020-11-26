@@ -1,18 +1,10 @@
-#ifndef LEM_H
-#define LEM_H
+#ifndef LEM_STRUCTS_H
+#define LEM_STRUCTS_H
 
 # include <stddef.h>
 # include "array_list.h"
 # include "list.h"
 # include "hash_map.h"
-
-typedef enum			e_room_type
-{
-						ROOM_UNDEFINED = -1,
-						ROOM_DEFAULT,
-						ROOM_START,
-						ROOM_END
-}						t_room_type;
 
 typedef struct			s_ant
 {
@@ -30,7 +22,6 @@ typedef struct			s_link
 
 typedef struct			s_room
 {
-	enum e_room_type	type;
 	char				*name;
 	size_t				index;
 	int					x;
@@ -38,16 +29,24 @@ typedef struct			s_room
 	t_list				*links;
 }						t_room;
 
-typedef struct	s_graph
+typedef struct			s_graph
 {
-	t_hashmap	*rooms_names;
-	t_hashmap	*coords;
-	t_arrlist	*rooms;
-	t_arrlist	*links;
-	t_list_node	**last;
-	int			ants;
-	int			start;
-	int			end;
-}				t_graph;
+	t_hashmap			*rooms_names;
+	t_hashmap			*coords;
+	t_arrlist			*rooms;
+	t_arrlist			*links;
+	t_list_node			**last;
+	int					ants;
+	int					start;
+	int					end;
+}						t_graph;
+
+typedef struct			s_solution
+{
+	t_list				*paths;
+	t_ant				*ants;
+	size_t				*paths_sizes;
+	size_t				*paths_waits;
+}						t_solution;
 
 #endif

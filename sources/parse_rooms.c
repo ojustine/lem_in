@@ -1,11 +1,12 @@
 #include <stdlib.h>
-#include "lem.h"
+#include "lem_structs.h"
 #include "str.h"
 #include "util.h"
 #include "conv.h"
 #include "list.h"
 #include "hash_map.h"
 #include "lem_errors.h"
+#include "lem_parse.h"
 
 static void		validate_room_line(char **words)
 {
@@ -45,23 +46,25 @@ static void		validate_room_coords(t_graph *g, t_room *room)
 	else
 	{
 		coords_y = list_new();
+		ft_assert(coords_y != NULL, __func__, "malloc error");
 		hashmap_put(g->coords, &room->x, sizeof(int), coords_y);
 	}
 	list_push_back(coords_y, (void *)(long long)room->y);
 }
 
-static t_room	*new_room(char **words, size_t idx, const t_room_type *type)
+static t_room	*new_room(char **words, size_t idx)
 {
 	t_room	*room;
 
 	room = malloc(sizeof(t_room));
 	ft_assert(room != NULL, __func__, "malloc error");
-	room->name = words[0];
+	room->name = ft_strdup(words[0]);
 	room->x = (int)ft_atol(words[1]);
 	room->y = (int)ft_atol(words[2]);
 	room->index = idx;
-	room->type = *type;
 	room->links = list_new();
+	ft_assert(room->links != NULL
+	&& room->name != NULL, __func__, "malloc error");
 	return (room);
 }
 
@@ -71,8 +74,8 @@ static void		create_room(t_graph *g, const t_room_type *type, char **words)
 	t_room			*room_out;
 	static size_t	index;
 
-	room_in = new_room(words, index++, type);
-	room_out = new_room(words, index++, type);
+	room_in = new_room(words, index++);
+	room_out = new_room(words, index++);
 	validate_room_coords(g, room_in);
 	if (hashmap_get(g->rooms_names, room_in->name, ft_strlen(room_in->name)))
 		ft_kill(LEM_ERR_ROOM_DUP_NAME, NULL, __func__, __FILE__);
@@ -97,4 +100,5 @@ void			parse_room(t_graph *g, t_room_type *type, const char *line)
 		ft_kill(LEM_ERR_ROOM_DUP_COMMAND, NULL, __func__, __FILE__);
 	create_room(g, type, words);
 	*type = ROOM_DEFAULT;
+	ft_free_split(words);
 }

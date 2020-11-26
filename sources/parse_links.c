@@ -1,10 +1,11 @@
 #include <stdlib.h>
-#include "lem.h"
+#include "lem_structs.h"
 #include "str.h"
 #include "util.h"
 #include "list.h"
 #include "hash_map.h"
 #include "lem_errors.h"
+#include "lem_parse.h"
 
 static void	add_edge(t_graph *g, size_t from, size_t to)
 {
@@ -32,11 +33,11 @@ static void	add_edge(t_graph *g, size_t from, size_t to)
 
 static void	validate_link_duplicates(t_graph *g, char **words)
 {
-	t_room *from;
-	t_room *to;
+	t_room		*from;
+	t_room		*to;
 	t_list_node	*links;
-	size_t	to_i;
-	char	*to_name;
+	size_t		to_index;
+	char		*to_name;
 
 	from = hashmap_get(g->rooms_names, words[0], ft_strlen(words[0]));
 	to = hashmap_get(g->rooms_names, words[1], ft_strlen(words[1]));
@@ -45,8 +46,8 @@ static void	validate_link_duplicates(t_graph *g, char **words)
 	links = from->links->front;
 	while (links != NULL)
 	{
-		to_i = ((t_link *)(g->links->storage[(size_t)links->data]))->to;
-		to_name = ((t_room *)(g->rooms->storage[to_i]))->name;
+		to_index = ((t_link *)(g->links->storage[(size_t)links->data]))->to;
+		to_name = ((t_room *)(g->rooms->storage[to_index]))->name;
 		if (ft_strequ(to->name, to_name))
 			ft_kill(LEM_ERR_LINK_DUP, NULL, __func__, __FILE__);
 		links = links->next;
