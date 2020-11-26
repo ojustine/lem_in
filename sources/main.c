@@ -51,6 +51,7 @@ int			main(int ac, char **av)
 	t_list	*input;
 	t_list	*paths;
 
+	(void)av;
 	input = list_new();
 	ft_assert(input != NULL, __func__, "malloc error");
 	g = new_graph();

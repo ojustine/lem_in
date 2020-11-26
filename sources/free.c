@@ -34,10 +34,25 @@ void	free_array_list(t_arrlist **vector, void (*f)(void *))
 	free(*vector);
 }
 
+void	free_coords(t_hashmap **coords)
+{
+	void	*ptr;
+	size_t	i;
+	t_list	*room_coords;
+
+	i = 0;
+	while (hashmap_iter(*coords, &i, NULL, &ptr))
+	{
+		room_coords = (t_list *)ptr;
+		list_clear(&room_coords, NULL);
+	}
+	hashmap_destroy(coords);
+}
+
 void	free_graph(t_graph **g)
 {
 	hashmap_destroy(&(*g)->rooms_names);
-	hashmap_destroy(&(*g)->coords);
+	free_coords(&(*g)->coords);
 	free_array_list(&(*g)->links, free);
 	free_array_list(&(*g)->rooms, free_room);
 	free(*g);
