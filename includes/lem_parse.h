@@ -7,7 +7,6 @@
 typedef enum			e_line_type
 {
 	LINE_UNDEFINED,
-	LINE_EMPTY,
 	LINE_ANTS,
 	LINE_ROOM,
 	LINE_LINK,

@@ -92,8 +92,8 @@ void			parse_room(t_graph *g, t_room_type *type, const char *line)
 
 	words = ft_strsplit(line, ' ');
 	validate_room_line(words);
-	if (*type == ROOM_START && g->start > 0
-	|| *type == ROOM_END && g->end > 0)
+	if (*type == ROOM_START && g->start != ROOM_UNDEFINED
+	|| *type == ROOM_END && g->end != ROOM_UNDEFINED)
 		ft_kill(LEM_ERR_ROOM_DUP_COMMAND, NULL, __func__, __FILE__);
 	create_room(g, type, words);
 	*type = ROOM_DEFAULT;

@@ -6,31 +6,31 @@
 #include "hash_map.h"
 #include "lem_errors.h"
 
-static void		add_edge(t_graph *g, size_t from, size_t to)
+static void	add_edge(t_graph *g, size_t from, size_t to)
 {
-	t_link	*e_dir;
-	t_link	*e_rev;
+	t_link	*dir;
+	t_link	*rev;
 
-	e_dir = malloc(sizeof(t_link));
-	e_rev = malloc(sizeof(t_link));
-	ft_assert(e_dir != NULL && e_rev != NULL, __func__, "malloc error");
-	e_dir->from = from;
-	e_dir->to = to;
-	e_dir->cap = 1;
-	e_dir->flow = 0;
-	e_rev->from = to;
-	e_rev->to = from;
-	e_rev->cap = 0;
-	e_rev->flow = 0;
+	dir = malloc(sizeof(t_link));
+	rev = malloc(sizeof(t_link));
+	ft_assert(dir != NULL && rev != NULL, __func__, "malloc error");
+	dir->from = from;
+	dir->to = to;
+	dir->cap = 1;
+	dir->flow = 0;
+	rev->from = to;
+	rev->to = from;
+	rev->cap = 0;
+	rev->flow = 0;
 	list_push_back(((t_room *)arrlist_peek(g->rooms, from))->links,
 		(void *)g->links->size);
-	arrlist_push_back(g->links, e_dir);
+	arrlist_push_back(g->links, dir);
 	list_push_back(((t_room *)arrlist_peek(g->rooms, to))->links,
 		(void *)g->links->size);
-	arrlist_push_back(g->links, e_rev);
+	arrlist_push_back(g->links, rev);
 }
 
-static void		validate_link_duplicates(t_graph *g, char **words)
+static void	validate_link_duplicates(t_graph *g, char **words)
 {
 	t_room *from;
 	t_room *to;
@@ -53,7 +53,7 @@ static void		validate_link_duplicates(t_graph *g, char **words)
 	}
 }
 
-static void		create_link(t_graph *g, char **words)
+static void	create_link(t_graph *g, char **words)
 {
 	size_t	from_index;
 	size_t	to_index;
@@ -68,7 +68,7 @@ static void		create_link(t_graph *g, char **words)
 	add_edge(g, to_index + 1, from_index - 1);
 }
 
-void			create_inself_links(t_graph *g)
+void		create_inself_links(t_graph *g)
 {
 	register size_t	from;
 	register size_t	to;
@@ -84,7 +84,7 @@ void			create_inself_links(t_graph *g)
 	}
 }
 
-void			parse_links(t_graph *g, t_room_type *type, const char *line)
+void		parse_links(t_graph *g, const t_room_type *type, const char *line)
 {
 	char **words;
 

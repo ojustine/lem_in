@@ -8,6 +8,7 @@
 
 typedef enum			e_room_type
 {
+						ROOM_UNDEFINED = -1,
 						ROOM_DEFAULT,
 						ROOM_START,
 						ROOM_END
