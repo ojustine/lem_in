@@ -6,7 +6,7 @@
 /*   By: ojustine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/08 14:42:28 by ojustine          #+#    #+#             */
-/*   Updated: 2019/09/08 23:03:20 by ojustine         ###   ########.fr       */
+/*   Updated: 2020/11/26 12:27:15 by ukelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,21 @@
 #include "mem.h"
 #include "str.h"
 
-static size_t    word_len(const char *s, char c)
+static size_t	word_len(const char *s, char c)
 {
-	const char *tmp = s;
+	const char	*tmp = s;
 
 	while (*tmp && *tmp != c)
 		tmp++;
 	return (tmp - s);
 }
 
-char   **ft_strsplit(char const *s, char c)
+char			**ft_strsplit(char const *s, char c)
 {
-	char   **split;
-	size_t w_len;
-	size_t i;
+	char	**split;
+	size_t	w_len;
+	size_t	i;
+
 	if (!s || !(split = malloc(sizeof(char*) * (ft_words_count(s, c) + 1))))
 		return (NULL);
 	i = 0;

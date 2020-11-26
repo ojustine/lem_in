@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memswap.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ojustine <ukelly@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 12:01:34 by ojustine          #+#    #+#             */
+/*   Updated: 2020/11/26 13:30:59 by ukelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stddef.h>
 #include "mem.h"
 
@@ -18,15 +30,16 @@ static inline void	swap_64(size_t *restrict m1, size_t *restrict m2)
 	*m2 = tmp;
 }
 
-/**
-* @brief Swaps memory.
-* @details Swaps @a n bytes in two memory areas.
-* @note The memory areas should not overlap.
-* @param [in] b1 Memory area.
-* @param [in] b2 Memory area.
-* @param [in] n Size of memory to swap.
-* @ingroup mem
+/*
+** @brief Swaps memory.
+** @details Swaps @a n bytes in two memory areas.
+** @note The memory areas should not overlap.
+** @param [in] b1 Memory area.
+** @param [in] b2 Memory area.
+** @param [in] n Size of memory to swap.
+** @ingroup mem
 */
+
 void				ft_memswap(void *b1, void *b2, size_t n)
 {
 	unsigned char	*b1_8;

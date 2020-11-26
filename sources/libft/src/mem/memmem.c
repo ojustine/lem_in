@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memmem.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ojustine <ukelly@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 12:01:34 by ojustine          #+#    #+#             */
+/*   Updated: 2020/11/26 12:45:46 by ukelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "mem.h"
 
 #define ALPHABET_SIZE	(UCHAR_MAX + 1)
@@ -87,18 +99,19 @@ static void				*search_raita(const void *haystack, size_t hs_len,
 	return (NULL);
 }
 
-/**
-* @brief Locate a byte substring in a byte string.
-* @details Finds the start of the first occurrence of the substring @a needle
-* of length @a ne_len in the memory area @a haystack of length @a hs_len.
-* @param haystack Memory area the big.
-* @param hs_len Size of @a haystack.
-* @param needle Memory area the little.
-* @param ne_len Size of @a needle.
-* @return Returns a pointer to the beginning of the substring,
-* or NULL if the substring is not found.
-* @ingroup mem
+/*
+** @brief Locate a byte substring in a byte string.
+** @details Finds the start of the first occurrence of the substring @a needle
+** of length @a ne_len in the memory area @a haystack of length @a hs_len.
+**@param haystack Memory area the big.
+** @param hs_len Size of @a haystack.
+** @param needle Memory area the little.
+** @param ne_len Size of @a needle.
+** @return Returns a pointer to the beginning of the substring,
+** or NULL if the substring is not found.
+** @ingroup mem
 */
+
 void					*ft_memmem(const void *haystack, size_t hs_len,
 						const void *needle, size_t ne_len)
 {
@@ -125,6 +138,6 @@ void					*ft_memmem(const void *haystack, size_t hs_len,
 		return (hw == nw ? (void *)hs - 1 : NULL);
 	}
 	if (ne_len <= ALPHABET_SIZE)
-		return search_256_bytes(hs, end, ne, ne_len);
+		return (search_256_bytes(hs, end, ne, ne_len));
 	return (search_raita(haystack, hs_len, needle, ne_len));
 }

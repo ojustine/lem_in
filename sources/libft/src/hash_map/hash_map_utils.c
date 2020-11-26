@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hash_map_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ojustine <ukelly@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 12:01:34 by ojustine          #+#    #+#             */
+/*   Updated: 2020/11/26 13:09:56 by ukelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdint.h>
 #include "hash_map.h"
 
@@ -52,19 +64,18 @@ uint64_t				murmur_hash_64(const void *key, size_t len,
 	return (hash);
 }
 
-size_t	ft_log2(size_t n)
+size_t					ft_log2(size_t n)
 {
-	static int8_t table[64] =
-		{
-			63, 0, 58, 1, 59, 47, 53, 2,
-			60, 39, 48, 27, 54, 33, 42, 3,
-			61, 51, 37, 40, 49, 18, 28, 20,
-			55, 30, 34, 11, 43, 14, 22, 4,
-			62, 57, 46, 52, 38, 26, 32, 41,
-			50, 36, 17, 19, 29, 10, 13, 21,
-			56, 45, 25, 31, 35, 16, 9, 12,
-			44, 24, 15, 8, 23, 7, 6, 5
-		};
+	static int8_t table[64] = {
+		63, 0, 58, 1, 59, 47, 53, 2,
+		60, 39, 48, 27, 54, 33, 42, 3,
+		61, 51, 37, 40, 49, 18, 28, 20,
+		55, 30, 34, 11, 43, 14, 22, 4,
+		62, 57, 46, 52, 38, 26, 32, 41,
+		50, 36, 17, 19, 29, 10, 13, 21,
+		56, 45, 25, 31, 35, 16, 9, 12,
+		44, 24, 15, 8, 23, 7, 6, 5
+	};
 
 	if (n < 2)
 		return (0);
@@ -74,11 +85,10 @@ size_t	ft_log2(size_t n)
 	n |= n >> 8U;
 	n |= n >> 16U;
 	n |= n >> 32U;
-
 	return (table[((n - (n >> 1U)) * 0x07edd5e59a4e28c2) >> 58U]);
 }
 
-size_t	next_power_of_two(size_t n)
+size_t					next_power_of_two(size_t n)
 {
 	if (n < 2)
 		n = 2;
@@ -93,7 +103,7 @@ size_t	next_power_of_two(size_t n)
 	return (n);
 }
 
-size_t	hash_map_calc_index(t_hashmap *hmap, uint64_t hash)
+size_t					hash_map_calc_index(t_hashmap *hmap, uint64_t hash)
 {
 	return (hash * hmap->hash_key % hmap->size);
 }

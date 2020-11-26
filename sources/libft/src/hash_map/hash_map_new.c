@@ -1,10 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hash_map_new.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ojustine <ukelly@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 12:01:34 by ojustine          #+#    #+#             */
+/*   Updated: 2020/11/26 13:23:30 by ukelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "hash_map.h"
 #include "mem.h"
 
-//todo add flags: copy val, copy key, auto increase, auto decrease
-//todo prime num for every pow2
-t_hashmap	*hashmap_new_param(size_t capacity, float load_factor, size_t hash_key)
+/*
+** add flags: copy val, copy key, auto increase, auto decrease
+** prime num for every pow2
+*/
+
+t_hashmap	*hashmap_new_param(size_t capacity, float load_factor,
+			size_t hash_key)
 {
 	t_hashmap	*hmap;
 

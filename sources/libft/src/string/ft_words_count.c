@@ -12,9 +12,10 @@
 
 #include <stddef.h>
 
-size_t     ft_words_count(char const *s, char c)
+size_t	ft_words_count(char const *s, char c)
 {
-	size_t words;
+	size_t	words;
+
 	words = 0;
 	if (!s)
 		return (0);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   memchr.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ojustine <ukelly@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 12:01:34 by ojustine          #+#    #+#             */
+/*   Updated: 2020/11/26 13:04:50 by ukelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <limits.h>
 #include <stddef.h>
 
@@ -10,18 +22,19 @@ static inline size_t	hasbyte(size_t word, unsigned char byte)
 	return ((mask - ones) & ~mask & highs);
 }
 
-/**
-* @brief Locates the first occurrence of byte in memory area.
-* @details Scans the first @a n bytes of the memory
-* area pointed to by @a src for the character @a c. The first byte to match @a c
-* (interpreted as an unsigned character) stops the operation.
-* @param src Memory area;
-* @param c Sought byte.
-* @param n Size of memory to find.
-* @return A pointer to the matching byte or NULL if the character does not
-* occur in the given memory area.
-* @ingroup mem
+/*
+** @brief Locates the first occurrence of byte in memory area.
+** @details Scans the first @a n bytes of the memory
+** area pointed to by @a src for the character @a c. The first byte to match @a
+** c (interpreted as an unsigned character) stops the operation.
+** @param src Memory area;
+** @param c Sought byte.
+** @param n Size of memory to find.
+** @return A pointer to the matching byte or NULL if the character does not
+** occur in the given memory area.
+** @ingroup mem
 */
+
 void					*ft_memchr(const void *src, int c, size_t n)
 {
 	const unsigned char *restrict	s8 = (const unsigned char *)src;
@@ -51,18 +64,19 @@ void					*ft_memchr(const void *src, int c, size_t n)
 	return (n ? (void *)s8 : (void *)0);
 }
 
-/**
-* @brief Locates the last occurrence of byte in memory area.
-* @details Scans the first @a n bytes of the memory
- area pointed to by @a src for the character @a c. The last byte to match @a c
-* (interpreted as an unsigned character) stops the operation.
-* @param src Memory area;
-* @param c Sought byte.
-* @param n Size of memory to find.
-* @return A pointer to the matching byte or NULL if the character does not
-* occur in the given memory area.
-* @ingroup mem
+/*
+** @brief Locates the last occurrence of byte in memory area.
+** @details Scans the first @a n bytes of the memory
+** area pointed to by @a src for the character @a c. The last byte to match @a c
+** (interpreted as an unsigned character) stops the operation.
+** @param src Memory area;
+** @param c Sought byte.
+** @param n Size of memory to find.
+** @return A pointer to the matching byte or NULL if the character does not
+** occur in the given memory area.
+** @ingroup mem
 */
+
 void					*ft_memrchr(const void *src, int c, size_t n)
 {
 	const unsigned char *restrict	s8 = (const unsigned char *)src + n;

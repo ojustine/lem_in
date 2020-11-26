@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   arrlisti_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ojustine <ukelly@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 12:01:34 by ojustine          #+#    #+#             */
+/*   Updated: 2020/11/26 13:14:46 by ukelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include "array_list.h"
 #include "mem.h"
 
-int	arrlisti_ensure_capacity(t_arrlisti *list, size_t cap)
+int		arrlisti_ensure_capacity(t_arrlisti *list, size_t cap)
 {
 	size_t			new_cap;
 	int				*storage;
@@ -29,7 +41,7 @@ int	arrlisti_ensure_capacity(t_arrlisti *list, size_t cap)
 	return (1);
 }
 
-int arrlisti_is_empty(t_arrlisti *list)
+int		arrlisti_is_empty(t_arrlisti *list)
 {
 	if (!list)
 		return (-1);

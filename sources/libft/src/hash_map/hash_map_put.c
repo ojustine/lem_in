@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hash_map_put.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ojustine <ukelly@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/26 12:01:34 by ojustine          #+#    #+#             */
+/*   Updated: 2020/11/26 13:26:39 by ukelly           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "util.h"
 #include "mem.h"
 #include "hash_map.h"
@@ -49,7 +61,8 @@ int					hashmap_insert(t_hashmap *hmap, t_hashmap_entry *entry)
 	return (0);
 }
 
-int	hashmap_put(t_hashmap *hmap, const void *key, size_t key_len, void *val)
+int					hashmap_put(t_hashmap *hmap, const void *key,
+					size_t key_len, void *val)
 {
 	size_t			try;
 	t_hashmap_entry	entry;
@@ -67,8 +80,6 @@ int	hashmap_put(t_hashmap *hmap, const void *key, size_t key_len, void *val)
 		if (!hashmap_resize(hmap, hmap->capacity << 1U))
 		{
 			try++;
-			//todo assert try < some num?
-			//todo hash_key = next_prime_num
 		}
 	}
 	return (0);

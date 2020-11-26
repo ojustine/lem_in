@@ -12,9 +12,9 @@
 
 #include "io.h"
 #include "str.h"
-# include <limits.h>
-# include <stdlib.h>
-# include <unistd.h>
+#include <limits.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static t_fd_list	*node_get(int fd, t_fd_list **list)
 {
