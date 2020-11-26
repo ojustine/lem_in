@@ -43,7 +43,7 @@ static int			handle_saved_line(char **line, t_fd_list **node)
 	const char		*nl_ptr = ft_strchr((*node)->line, '\n');
 	char			*tmp;
 
-	len = nl_ptr ? nl_ptr - (*node)->line : ft_strlen((*node)->line);
+	len = nl_ptr ? (size_t)(nl_ptr - (*node)->line) : ft_strlen((*node)->line);
 	*line = ft_strndup((*node)->line, len);
 	tmp = NULL;
 	if (((*node)->line)[len] == '\n' && ((*node)->line)[len + 1] != '\0')
@@ -84,6 +84,7 @@ int					get_next_line(const int fd, char **line)
 	register int		reads;
 	char				buff[BUFF_SIZE + 1];
 
+	reads = 0;
 	if (fd < 0 || !line || !(node = node_get(fd, &fd_list)))
 		return (-1);
 	if (!node->line || !ft_strchr(node->line, '\n'))
@@ -100,7 +101,6 @@ int					get_next_line(const int fd, char **line)
 		if (reads < 0)
 			return (-1);
 	}
-	if (reads == 0 && !node->line)
-		return (node_free(&fd_list, node->fd));
-	return (handle_saved_line(line, &node));
+	return (reads == 0 && !node->line
+	? node_free(&fd_list, node->fd) : handle_saved_line(line, &node));
 }

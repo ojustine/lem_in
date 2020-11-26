@@ -47,14 +47,15 @@ static void			print_paths_do(t_graph *g, t_solution *sol)
 static void			set_ants_on_paths(t_graph *g, t_solution *sol)
 {
 	t_list_node *node;
-	size_t		i;
+	int			i;
+	int			j;
 
 	i = 0;
 	while (i < g->ants)
 	{
-		int j = 0;
+		j = 0;
 		node = sol->paths->front;
-		while (j < sol->paths->size - 1)
+		while ((size_t)j < sol->paths->size - 1)
 		{
 			if (sol->paths_sizes[j] < sol->paths_sizes[j + 1])
 				break;

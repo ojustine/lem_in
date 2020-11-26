@@ -41,7 +41,7 @@ void					*ft_memchr(const void *src, int c, size_t n)
 	const size_t *restrict			s64;
 
 	c = (unsigned char)c;
-	while (((size_t)s8 & sizeof(size_t) - 1) && n && *s8 != c)
+	while (((size_t)s8 & (sizeof(size_t) - 1)) && n && *s8 != c)
 	{
 		s8++;
 		n--;
@@ -84,7 +84,7 @@ void					*ft_memrchr(const void *src, int c, size_t n)
 	register int					i;
 
 	c = (unsigned char)c;
-	while (((size_t)s8 & sizeof(size_t) - 1) && n)
+	while (((size_t)s8 & (sizeof(size_t) - 1)) && n)
 		if (*--s8 == c)
 			return ((void *)s8);
 	s64 = (const void *)s8;
@@ -95,7 +95,7 @@ void					*ft_memrchr(const void *src, int c, size_t n)
 		{
 			s8 = (const unsigned char *)s64;
 			i = -1;
-			while (++i < sizeof(size_t))
+			while (++i < (int)sizeof(size_t))
 				if (s8[i] == c)
 					return ((void *)&s8[i]);
 		}

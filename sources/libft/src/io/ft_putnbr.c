@@ -4,7 +4,6 @@ void	ft_putnbr(int n)
 {
 	static const char	*digits = "0123456789";
 	long long			nb;
-	char		c;
 
 	nb = n;
 	if (nb < 0)

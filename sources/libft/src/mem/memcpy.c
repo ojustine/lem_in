@@ -118,7 +118,7 @@ void	*ft_memmove(void *dst, const void *src, size_t n)
 	d64 = (size_t *)(dst + n);
 	if (dst == src)
 		return (dst);
-	else if (dst - src >= n)
+	else if (dst - src >= (long long)n)
 		return (ft_memcpy(dst, src, n));
 	i = 0;
 	while (i < (n / sizeof(size_t)))

@@ -3,6 +3,8 @@ project(lem C)
 
 set(CMAKE_C_STANDARD 99)
 
+set(CMAKE_C_FLAGS "-O2 -Wall -Wextra")
+
 include_directories(includes sources/libft/inc)
 
 add_library(libft STATIC
