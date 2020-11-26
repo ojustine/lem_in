@@ -16,11 +16,25 @@ static void	graph_init(t_graph *g)
 	g->end = ROOM_UNDEFINED;
 }
 
+static void	print_input(t_list *input)
+{
+	register int		i;
+
+	i = 0;
+	while (i < input->size)
+	{
+		ft_putendl((char*)input->front->data);
+		i++;
+		input->front = input->front->next;
+	}
+	ft_putendl("");
+}
+
 int			main(int ac, char **av)
 {
-	t_graph g;
-	t_list *input;
-	t_list *paths;
+	t_graph	g;
+	t_list	*input;
+	t_list	*paths;
 
 	input = list_new();
 	graph_init(&g);
@@ -29,6 +43,7 @@ int			main(int ac, char **av)
 		parse_graph(&g, input);
 		paths = dinic(&g);
 		//print_paths(paths, &g);
+		print_input(input);
 		print_solution(&g, paths);
 	}
 	else
