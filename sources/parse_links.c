@@ -33,35 +33,23 @@ static void		validate_link_line(t_graph *g, char **words)
 {
 	t_room *from;
 	t_room *to;
-	t_list_node	*node;
+	t_list_node	*links;
+	size_t	to_i;
+	char	*to_name;
 
 	from = hashmap_get(g->rooms_names, words[0], ft_strlen(words[0]));
 	to = hashmap_get(g->rooms_names, words[1], ft_strlen(words[1]));
 	if (!from || !to)
 		ft_kill(LEM_ERR_LINK_NO_ROOM, NULL, __func__, __FILE__);
-	node = from->links->front;
-	for (int i = 0; i < from->links->size; i++)
+	links = from->links->front;
+	while (links != NULL)
 	{
-		if (((t_link *)(g->links->storage[(size_t)node->data]))->to == to->index)
+		to_i = ((t_link *)(g->links->storage[(size_t)links->data]))->to;
+		to_name = ((t_room *)(g->rooms->storage[to_i]))->name;
+		if (ft_strequ(to->name, to_name))
 			ft_kill(LEM_ERR_LINK_DUP, NULL, __func__, __FILE__);
-		node = node->next;
+		links = links->next;
 	}
-	node = to->links->front;
-	for (int i = 0; i < to->links->size; i++)
-	{
-		if (((t_link *)(g->links->storage[(size_t)node->data]))->from == from->index)
-			ft_kill(LEM_ERR_LINK_DUP, NULL, __func__, __FILE__);
-		node = node->next;
-	}
-//
-//
-//	if (ft_strequ(hashmap_get(g->links_names, words[0], ft_strlen(words[0])),
-//		words[1])
-//		|| ft_strequ(hashmap_get(g->links_names, words[1], ft_strlen(words[1])),
-//		words[0]))
-//		ft_kill(LEM_ERR_LINK_DUP, NULL, __func__, __FILE__);
-//	hashmap_put(g->links_names, words[0], ft_strlen(words[0]), words[1]);
-//	hashmap_put(g->links_names, words[1], ft_strlen(words[1]), words[0]);
 }
 
 static void		create_link(t_graph *g, char **words)

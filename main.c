@@ -11,7 +11,6 @@
 static void	graph_init(t_graph *g)
 {
 	g->rooms_names = hashmap_new();
-	g->links_names = hashmap_new();
 	g->coords = hashmap_new();
 	g->rooms = arrlist_new(40);
 	g->links = arrlist_new(40);

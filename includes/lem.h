@@ -40,7 +40,6 @@ typedef struct			s_room
 typedef struct	s_graph
 {
 	t_hashmap	*rooms_names;
-	t_hashmap	*links_names;
 	t_hashmap	*coords;
 	t_arrlist	*rooms;
 	t_arrlist	*links;
