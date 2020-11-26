@@ -2,7 +2,6 @@
 #include "lem.h"
 #include "str.h"
 #include "util.h"
-#include "conv.h"
 #include "list.h"
 #include "hash_map.h"
 #include "lem_errors.h"
@@ -23,13 +22,15 @@ static void		add_edge(t_graph *g, size_t from, size_t to)
 	e_rev->to = from;
 	e_rev->cap = 0;
 	e_rev->flow = 0;
-	list_push_back(((t_room *)arrlist_peek(g->rooms, from))->links, (void *)g->links->size);
+	list_push_back(((t_room *)arrlist_peek(g->rooms, from))->links,
+		(void *)g->links->size);
 	arrlist_push_back(g->links, e_dir);
-	list_push_back(((t_room *)arrlist_peek(g->rooms, to))->links, (void *)g->links->size);
+	list_push_back(((t_room *)arrlist_peek(g->rooms, to))->links,
+		(void *)g->links->size);
 	arrlist_push_back(g->links, e_rev);
 }
 
-static void		validate_link_line(t_graph *g, char **words)
+static void		validate_link_duplicates(t_graph *g, char **words)
 {
 	t_room *from;
 	t_room *to;
@@ -54,17 +55,17 @@ static void		validate_link_line(t_graph *g, char **words)
 
 static void		create_link(t_graph *g, char **words)
 {
-	size_t	from;
-	size_t	to;
-	t_room	*room_from;
-	t_room	*room_to;
+	size_t	from_index;
+	size_t	to_index;
+	t_room	*from;
+	t_room	*to;
 
-	room_from = (t_room *)hashmap_get(g->rooms_names, words[0], ft_strlen(words[0]));
-	from = room_from->index + 1;
-	room_to = (t_room *)hashmap_get(g->rooms_names, words[1], ft_strlen(words[1]));
-	to = room_to->index;
-	add_edge(g, from, to);
-	add_edge(g, to + 1, from - 1);
+	from = (t_room *)hashmap_get(g->rooms_names, words[0], ft_strlen(words[0]));
+	to = (t_room *)hashmap_get(g->rooms_names, words[1], ft_strlen(words[1]));
+	from_index = from->index + 1;
+	to_index = to->index;
+	add_edge(g, from_index, to_index);
+	add_edge(g, to_index + 1, from_index - 1);
 }
 
 void			create_inself_links(t_graph *g)
@@ -90,6 +91,7 @@ void			parse_links(t_graph *g, t_room_type *type, const char *line)
 	if (*type != ROOM_DEFAULT)
 		ft_kill(LEM_ERR_ROOM_INV_COMMAND, NULL, __func__, __FILE__);
 	words = ft_strsplit(line, '-');
-	validate_link_line(g, words);
+	validate_link_duplicates(g, words);
 	create_link(g, words);
+	ft_free_split(words);
 }

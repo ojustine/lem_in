@@ -30,7 +30,7 @@ int			main(int ac, char **av)
 	{
 		parse_graph(&g, input);
 		paths = dinic(&g);
-		print_paths(paths, &g);
+		//print_paths(paths, &g);
 		print_solution(&g, paths);
 	}
 	else

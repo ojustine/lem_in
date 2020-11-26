@@ -7,6 +7,7 @@
 #include "util.h"
 #include "list.h"
 #include "lem_solve.h"
+#include "lem_errors.h"
 
 static void		place_ants_on_paths_internal(t_list *paths, int *ants_on_path,
 												int *cur_path, t_list_node **node)
@@ -136,6 +137,8 @@ void			print_solution(t_graph *g, t_list *paths)
 	size_t	*paths_wait;
 	t_list_node	*node;
 
+	if (!paths)
+		ft_kill(LEM_ERR_NO_PATHS, NULL, __func__, __FILE__);
 	ants = ft_calloc(g->ants, sizeof(t_ant));
 	paths_sizes = ft_calloc(paths->size, sizeof(size_t));
 	paths_wait = ft_calloc(paths->size, sizeof(size_t));

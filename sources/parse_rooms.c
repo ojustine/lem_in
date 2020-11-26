@@ -7,7 +7,7 @@
 #include "hash_map.h"
 #include "lem_errors.h"
 
-static int		validate_room_line(char **words)
+static void		validate_room_line(char **words)
 {
 	char		*name;
 
@@ -24,7 +24,30 @@ static int		validate_room_line(char **words)
 		ft_kill(LEM_ERR_ROOM_COORDS, NULL, __func__, __FILE__);
 	if (words[2][0] == '\0' || !ft_isint(words[2]))
 		ft_kill(LEM_ERR_ROOM_COORDS, NULL, __func__, __FILE__);
-	return (1);
+}
+
+static void		validate_room_coords(t_graph *g, t_room *room)
+{
+	t_list		*coords_y;
+	t_list_node	*node;
+
+	coords_y = (t_list *)hashmap_get(g->coords, &room->x, sizeof(int));
+	if (coords_y)
+	{
+		node = coords_y->front;
+		while (node != NULL)
+		{
+			if ((int)(long long)node->data == room->y)
+				ft_kill(LEM_ERR_ROOM_DUP_COORD, NULL, __func__, __FILE__);
+			node = node->next;
+		}
+	}
+	else
+	{
+		coords_y = list_new();
+		hashmap_put(g->coords, &room->x, sizeof(int), coords_y);
+	}
+	list_push_back(coords_y, (void *)(long long)room->y);
 }
 
 static t_room	*new_room(char **words, size_t idx, const t_room_type *type)
@@ -46,19 +69,15 @@ static void		create_room(t_graph *g, const t_room_type *type, char **words)
 {
 	t_room			*room_in;
 	t_room			*room_out;
-	int				*coord_y;
 	static size_t	index;
 
 	room_in = new_room(words, index++, type);
 	room_out = new_room(words, index++, type);
-	coord_y = (int *)hashmap_get(g->coords, &room_in->x, sizeof(int));
+	validate_room_coords(g, room_in);
 	if (hashmap_get(g->rooms_names, room_in->name, ft_strlen(room_in->name)))
 		ft_kill(LEM_ERR_ROOM_DUP_NAME, NULL, __func__, __FILE__);
-	if (coord_y && *coord_y == room_in->y)
-		ft_kill(LEM_ERR_ROOM_DUP_COORD, NULL, __func__, __FILE__);
 	arrlist_push_back(g->rooms, room_in);
 	arrlist_push_back(g->rooms, room_out);
-	hashmap_put(g->coords, &room_in->x, sizeof(int), &room_in->y);
 	hashmap_put(g->rooms_names, room_in->name, ft_strlen(room_in->name),
 	g->rooms->storage[index - 2]);
 	if (*type == ROOM_START)
