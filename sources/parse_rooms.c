@@ -46,21 +46,19 @@ static void		create_room(t_graph *g, const t_room_type *type, char **words)
 {
 	t_room			*room_in;
 	t_room			*room_out;
-	int				*coord_x;
 	int				*coord_y;
 	static size_t	index;
 
 	room_in = new_room(words, index++, type);
 	room_out = new_room(words, index++, type);
-	coord_x = hashmap_get(g->coords, &room_in->x, sizeof(int));
-	if (coord_x && *coord_x == room_in->y)
-		ft_kill(LEM_ERR_ROOM_DUP_COORD, NULL, __func__, __FILE__);
+	coord_y = (int *)hashmap_get(g->coords, &room_in->x, sizeof(int));
 	if (hashmap_get(g->rooms_names, room_in->name, ft_strlen(room_in->name)))
 		ft_kill(LEM_ERR_ROOM_DUP_NAME, NULL, __func__, __FILE__);
+	if (coord_y && *coord_y == room_in->y)
+		ft_kill(LEM_ERR_ROOM_DUP_COORD, NULL, __func__, __FILE__);
 	arrlist_push_back(g->rooms, room_in);
 	arrlist_push_back(g->rooms, room_out);
-	hashmap_put(g->coords, &room_in->x, sizeof(int), &room_in->y);//p *(t_room*)g->rooms_names->storage[20]->val
-	void *prt = g->rooms->storage[index - 2];
+	hashmap_put(g->coords, &room_in->x, sizeof(int), &room_in->y);
 	hashmap_put(g->rooms_names, room_in->name, ft_strlen(room_in->name),
 	g->rooms->storage[index - 2]);
 	if (*type == ROOM_START)

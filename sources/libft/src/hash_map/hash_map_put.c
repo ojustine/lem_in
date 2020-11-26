@@ -32,15 +32,9 @@ static inline int	hashmap_insert_try(t_hashmap *hmap, t_hashmap_entry *bucket,
 int					hashmap_insert(t_hashmap *hmap, t_hashmap_entry *entry)
 {
 	t_hashmap_entry *bucket;
-	//t_hashmap_entry entry;
 	register size_t	i;
 
-	//entry.key = malloc(key_len);
-	//todo assert malloc && i < size
-	//ft_memcpy(entry.key, key, key_len);
 	entry->hash = murmur_hash_64(entry->key, entry->key_len, hmap->hash_key);
-	//entry.key_len = key_len;
-	//entry.val = val;
 	entry->offset = 0;
 	i = entry->hash * hmap->hash_key & (hmap->capacity - 1);
 	while (entry->offset <= hmap->max_offset)

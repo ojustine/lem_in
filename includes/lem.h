@@ -10,7 +10,7 @@ typedef enum			e_room_type
 {
 						ROOM_DEFAULT,
 						ROOM_START,
-						ROOM_END,
+						ROOM_END
 }						t_room_type;
 
 typedef struct			s_ant
@@ -45,7 +45,6 @@ typedef struct	s_graph
 	t_arrlist	*rooms;
 	t_arrlist	*links;
 	t_list_node	**last;
-	int			n;
 	int			ants;
 	int			start;
 	int			end;

@@ -6,7 +6,7 @@
 #include "list.h"
 #include "lem_solve.h"
 
-#define NOT_VISITED -1
+#define NOT_VISITED (-1)
 
 static int		bfs_internal(t_graph *g, int *layer)
 {
@@ -111,11 +111,12 @@ t_list			*dinic(t_graph *g)
 
 	best_paths = NULL;
 	best_turns = 0.0;
-	layer = malloc(g->n * sizeof(int ));
+	g->last = malloc(g->rooms->size * sizeof(t_list_node *));
+	layer = malloc(g->rooms->size * sizeof(int ));
 	ft_assert(layer != NULL, __func__, "malloc error");
 	while (1)
 	{
-		ft_memset(layer, NOT_VISITED, g->n * sizeof(int));
+		ft_memset(layer, NOT_VISITED, g->rooms->size * sizeof(int));
 		if (!bfs(g, layer))
 			break ;
 		while (dfs(g, layer, g->start, INT_MAX))

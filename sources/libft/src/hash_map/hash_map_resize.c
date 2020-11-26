@@ -37,7 +37,6 @@ int		hashmap_resize(t_hashmap *hmap, size_t new_capacity)
 			*hmap = snapshot;
 			return (0);
 		}
-		//free(entry->key);
 	}
 	free(old_storage);
 	return (1);
