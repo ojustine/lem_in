@@ -1,9 +1,11 @@
 NAME = lem-in
-LIBFT = sources/libft/libft.a
+LIBFT_A = sources/libft/libft.a
 
 CC = gcc
-
 FLAGS =
+
+LIBFT_DIR = sources/libft
+
 
 SRC_DIR = sources
 OBJ_DIR = obj
@@ -33,28 +35,28 @@ OBJS_PATH = $(addprefix $(OBJ_DIR)/,$(OBJS))
 
 .PHONY: clean fclean all re make_lib
 
-all: $(LIBFT) $(NAME)
+all: $(NAME)
 
-$(LIBFT) : make_lib
+$(LIBFT_A) : make_lib
 	@mkdir -p $(OBJ_DIR)
 
 make_lib:
-	@make -C ./sources/libft/
+	$(MAKE) -C ./sources/libft/
 
-$(NAME): $(OBJS_PATH) $(LIBFT) $(HEADERS)
-	$(CC) -o $@ $(OBJS_PATH) $(LIBFT) $(INCLUDE)
+$(NAME): $(LIBFT_A) $(OBJS_PATH) $(HEADERS)
+	$(CC) -o $@ $(OBJS_PATH) $(LIBFT_A) $(INCLUDE)
 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(HEADERS) Makefile
 	$(CC) -o $@ -c $< $(INCLUDE) $(FLAGS)
 
-clean:
-	@rm -rf $(OBJ_DIR)
-	@make -C ./sources/libft/ clean
+clean :
+	$(RM) -rf $(OBJ_DIR)
+	$(MAKE) clean -C $(LIBFT_DIR)
 
-fclean: clean
-	@rm -f $(NAME)
-	@make -C ./sources/libft/ fclean
+fclean : clean
+	$(RM) -rf $(NAME)
+	$(MAKE) fclean -C $(LIBFT_DIR)
 
-re: fclean all
+re : fclean all
 
-.PHONY: make_lib clean fclean re
+.PHONY: clean fclean all re make_lib

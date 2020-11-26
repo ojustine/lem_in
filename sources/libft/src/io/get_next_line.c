@@ -6,7 +6,7 @@
 /*   By: ojustine <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/02 15:09:44 by ojustine          #+#    #+#             */
-/*   Updated: 2019/10/02 18:34:48 by ojustine         ###   ########.fr       */
+/*   Updated: 2020/11/26 16:41:03 by ukelly           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,8 @@ int					get_next_line(const int fd, char **line)
 
 	if (fd < 0 || !line || !(node = node_get(fd, &fd_list)))
 		return (-1);
-	reads = 0;
 	if (!node->line || !ft_strchr(node->line, '\n'))
+	{
 		while ((reads = read(fd, buff, BUFF_SIZE)) > 0)
 		{
 			buff[reads] = '\0';
@@ -97,6 +97,9 @@ int					get_next_line(const int fd, char **line)
 			if (ft_strchr(buff, '\n'))
 				break ;
 		}
+		if (reads < 0)
+			return (-1);
+	}
 	if (reads == 0 && !node->line)
 		return (node_free(&fd_list, node->fd));
 	return (handle_saved_line(line, &node));
